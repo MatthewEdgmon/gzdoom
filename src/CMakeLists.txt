@@ -1260,6 +1260,18 @@ add_executable( zdoom WIN32 MACOSX_BUNDLE
 	common/thirdparty/math/fastsin.cpp
 )
 
+if(VITA)
+	vita_create_self(${PROJECT_NAME}.self zdoom)
+	vita_create_vpk(${PROJECT_NAME}.vpk ${VITA_TITLEID} ${PROJECT_NAME}.self
+		VERSION ${VITA_VERSION}
+		NAME ${VITA_APP_NAME}
+#		FILE vita/sce_sys/icon0.png sce_sys/icon0.png
+#		FILE vita/sce_sys/livearea/contents/bg.png sce_sys/livearea/contents/bg.png
+#		FILE vita/sce_sys/livearea/contents/startup.png sce_sys/livearea/contents/startup.png
+#		FILE vita/sce_sys/livearea/contents/template.xml sce_sys/livearea/contents/template.xml
+	)
+endif()
+
 set_source_files_properties( ${FASTMATH_SOURCES} PROPERTIES COMPILE_FLAGS ${ZD_FASTMATH_FLAG} )
 set_source_files_properties( xlat/parse_xlat.cpp PROPERTIES OBJECT_DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xlat_parser.c" )
 set_source_files_properties( common/engine/sc_man.cpp PROPERTIES OBJECT_DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/sc_man_scanner.h" )
@@ -1278,7 +1290,15 @@ if( UNIX )
 	endif()
 endif()
 
+if(VITA)
+	# LZDoom libraries.
+	target_link_libraries(zdoom ${ZDOOM_LIBS} gdtoa lzma ${ZMUSIC_LIBRARIES} )
+	# Vita libraries.
+	target_link_libraries(zdoom SceLibKernel_stub SceAppMgr_stub SceSysmodule_stub SceCtrl_stub SceTouch_stub SceNet_stub SceNetCtl_stub SceAppUtil_stub ScePower_stub SceCommonDialog_stub)
+	target_link_libraries(zdoom SceAudio_stub SceGxm_stub SceDisplay_stub SceHid_stub)
+else()
 target_link_libraries( zdoom ${ZDOOM_LIBS} gdtoa lzma ${ZMUSIC_LIBRARIES} )
+endif()
 
 include_directories( .
 	common/audio/sound

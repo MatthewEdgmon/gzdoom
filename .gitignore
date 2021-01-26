@@ -1,3 +1,9 @@
+/vita/zmusic/pkg
+/vita/zmusic/src
+/vita_build
+/native_build
+*.vpk
+
 *.ncb
 *.suo
 *.pdb

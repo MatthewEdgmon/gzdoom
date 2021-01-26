@@ -1,10 +1,47 @@
-cmake_minimum_required( VERSION 3.1.0 )
+cmake_minimum_required( VERSION 3.0.0 )
+
+if(VITA)
+	# Ensure Vita SDK is in path.
+	if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    	if(DEFINED ENV{VITASDK})
+    		set(CMAKE_TOOLCHAIN_FILE "$ENV{VITASDK}/share/vita.toolchain.cmake" CACHE PATH "toolchain file")
+    	else()
+			message(FATAL_ERROR "Please define VITASDK to point to your SDK path!")
+    	endif()
+	endif()
+
+	# Include Vita SDK
+	include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
+
+	# Set Vita LiveArea info.
+	set(VITA_APP_NAME "LZDoom-vita")
+	set(VITA_TITLEID  "MMEV00666")
+	set(VITA_VERSION  "03.87c")
+
+	# Tell cmake where our ZMusic built from vita-makepkg is.
+	set(ZMUSIC_INCLUDE_DIR "/usr/local/vitasdk/arm-vita-eabi/include/")
+	set(ZMUSIC_LIBRARIES "/usr/local/vitasdk/arm-vita-eabi/lib/")
+
+	# Set CMake target architecture.
+	set(ARCH arm)
+
+	# Give our native build file to cmake.
+	#set(CMAKE_CROSSCOMPILING TRUE)
+	set(IMPORT_EXECUTABLES "${CMAKE_CURRENT_BINARY_DIR}/../native_build/ImportExecutables.cmake")
+
+	# Set Vita build flags.
+	add_definitions(-D__VITA__ -DBSD -D_GNU_SOURCE) # This is hacked together to just get it to build.
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -O0 -g3 -fsigned-char -fno-short-enums -flto")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -O0 -g3 -fsigned-char -fno-short-enums -flto")
+	set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -g3")
+	set(HAVE_SDL_JOYSTICKGETAXIS TRUE)
+endif()
+
 project(LZDoom)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF) 
-
 
 if( COMMAND cmake_policy )
 	if( POLICY CMP0011 )
@@ -25,7 +62,9 @@ if( FORCE_CROSSCOMPILE )
 endif()
 
 if(CMAKE_CROSSCOMPILING)
+	if(NOT VITA)
 	set(IMPORT_EXECUTABLES "IMPORTFILE-NOTFOUND" CACHE FILEPATH "Export file from native build.")
+	endif()
 	include(${IMPORT_EXECUTABLES})
 endif()
 

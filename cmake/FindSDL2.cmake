@@ -74,6 +74,7 @@ FIND_PATH(SDL2_INCLUDE_DIR SDL.h
   /opt/csw # Blastwave
   /opt
   /boot/system/develop/headers/SDL2 #Hiaku OS
+  /usr/local/vitasdk/arm-vita-eabi/include/SDL2 #Vita
 )
 #MESSAGE("SDL2_INCLUDE_DIR is ${SDL2_INCLUDE_DIR}")
 
@@ -88,6 +89,7 @@ FIND_LIBRARY(SDL2_LIBRARY_TEMP
   /opt/csw
   /opt
   /system/lib #Hiaku OS
+  /usr/local/vitasdk/arm-vita-eabi/lib #Vita
 )
 
 #MESSAGE("SDL2_LIBRARY_TEMP is ${SDL2_LIBRARY_TEMP}")

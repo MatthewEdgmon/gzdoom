@@ -15,6 +15,10 @@
 #include <signal.h>
 #endif
 
+#ifdef __VITA__
+#include <sys/signal.h>
+#include <signal.h>
+#endif
 
 static const char crash_switch[] = "--cc-handle-crash";
 
