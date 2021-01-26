@@ -24,6 +24,7 @@ if(VITA)
 
 	# Set CMake target architecture.
 	set(ARCH arm)
+	set(ZDOOM_TARGET_ARCH "arm")
 
 	# Give our native build file to cmake.
 	#set(CMAKE_CROSSCOMPILING TRUE)
@@ -31,6 +32,8 @@ if(VITA)
 
 	# Set Vita build flags.
 	add_definitions(-D__VITA__ -DBSD -D_GNU_SOURCE) # This is hacked together to just get it to build.
+	# for some reason the check for clock_gettime passes (?) regardless if force skipped or not.
+	add_definitions(-DNO_CLOCK_GETTIME)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -O0 -g3 -fsigned-char -fno-short-enums -flto")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -O0 -g3 -fsigned-char -fno-short-enums -flto")
 	set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -g3")

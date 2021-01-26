@@ -41,7 +41,9 @@
 #include <sys/param.h>
 #include <locale.h>
 #include <sys/stat.h>
+#ifndef __VITA__
 #include <sys/utsname.h>
+#endif
 
 #include "engineerrors.h"
 #include "m_argv.h"
@@ -94,6 +96,11 @@ static int GetCrashInfo (char *buffer, char *end)
 	return strlen(buffer);
 }
 
+#ifdef __VITA__
+void I_DetectOS() {
+	Printf("OS: BSD\n");
+}
+#else
 void I_DetectOS()
 {
 	FString operatingSystem;
@@ -141,17 +148,20 @@ void I_DetectOS()
 	if (operatingSystem.Len() > 0)
 		Printf("OS: %s\n", operatingSystem.GetChars());
 }
+#endif // __VITA__
 
 void I_StartupJoysticks();
 
 int main (int argc, char **argv)
 {
+#if !defined (__VITA__)
 #if !defined (__APPLE__)
 	{
 		int s[4] = { SIGSEGV, SIGILL, SIGFPE, SIGBUS };
 		cc_install_handlers(argc, argv, 4, s, GAMENAMELOWERCASE "-crash.log", GetCrashInfo);
 	}
 #endif // !__APPLE__
+#endif // !__VITA__
 
 	printf(GAMENAME" %s - %s - SDL version\nCompiled on %s\n",
 		GetVersionString(), GetGitTime(), __DATE__);
@@ -175,6 +185,8 @@ int main (int argc, char **argv)
 	Args = new FArgs(argc, argv);
 
 	// Should we even be doing anything with progdir on Unix systems?
+	// VITA: Nope.
+#ifndef __VITA__
 	char program[PATH_MAX];
 	if (realpath (argv[0], program) == NULL)
 		strcpy (program, argv[0]);
@@ -188,7 +200,8 @@ int main (int argc, char **argv)
 	{
 		progdir = "./";
 	}
-	
+#endif // __VITA__
+
 	I_StartupJoysticks();
 
 	const int result = GameMain();

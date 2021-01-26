@@ -499,6 +499,20 @@ set( PLAT_COCOA_SOURCES
 	common/platform/posix/cocoa/st_console.mm
 	common/platform/posix/cocoa/st_start.mm )
 
+if(VITA)
+	# removed crashcatcher.c
+	unset(PLAT_SDL_SOURCES)
+	set(PLAT_SDL_SOURCES
+		common/platform/posix/sdl/hardware.cpp
+		common/platform/posix/sdl/i_gui.cpp
+		common/platform/posix/sdl/i_input.cpp
+		common/platform/posix/sdl/i_joystick.cpp
+		common/platform/posix/sdl/i_main.cpp
+		common/platform/posix/sdl/i_system.cpp
+		common/platform/posix/sdl/sdlglvideo.cpp
+		common/platform/posix/sdl/st_start.cpp )
+endif()
+
 if( WIN32 )
 	set( SYSTEM_SOURCES_DIR common/platform/win32 )
 	set( SYSTEM_SOURCES ${PLAT_WIN32_SOURCES} )

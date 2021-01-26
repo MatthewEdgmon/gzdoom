@@ -36,7 +36,9 @@
 
 #include <unistd.h>
 #include <sys/time.h>
+#ifndef __VITA__
 #include <termios.h>
+#endif
 
 #include "st_start.h"
 #include "i_system.h"
