@@ -65,7 +65,9 @@ class FTTYStartupScreen : public FStartupScreen
 		bool DidNetInit;
 		int NetMaxPos, NetCurPos;
 		const char *TheNetMessage;
+#ifndef __VITA__
 		termios OldTermIOS;
+#endif // __VITA__
 };
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
@@ -163,6 +165,7 @@ void FTTYStartupScreen::NetInit(const char *message, int numplayers)
 {
 	if (!DidNetInit)
 	{
+#ifndef __VITA__
 		termios rawtermios;
 
 		fprintf (stderr, "Press 'Q' to abort network game synchronization.");
@@ -172,6 +175,7 @@ void FTTYStartupScreen::NetInit(const char *message, int numplayers)
 		rawtermios = OldTermIOS;
 		rawtermios.c_lflag &= ~(ICANON | ECHO);
 		tcsetattr (STDIN_FILENO, TCSANOW, &rawtermios);
+#endif // __VITA__
 		DidNetInit = true;
 	}
 	if (numplayers == 1)
@@ -203,8 +207,10 @@ void FTTYStartupScreen::NetDone()
 	// Restore stdin settings
 	if (DidNetInit)
 	{
+#ifndef __VITA__
 		tcsetattr (STDIN_FILENO, TCSANOW, &OldTermIOS);
 		printf ("\n");
+#endif // __VITA__
 		DidNetInit = false;
 	}
 }

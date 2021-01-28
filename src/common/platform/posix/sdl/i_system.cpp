@@ -189,6 +189,11 @@ void I_PrintStr(const char *cp)
 
 int I_PickIWad (WadStuff *wads, int numwads, bool showwin, int defaultiwad)
 {
+
+#ifdef __VITA__
+	// TODO: Might be place to try to open IWAD from Vita SD memory.
+	return defaultiwad;
+#else // __VITA__
 	int i;
 
 	if (!showwin)
@@ -279,6 +284,7 @@ int I_PickIWad (WadStuff *wads, int numwads, bool showwin, int defaultiwad)
 	if (scanf ("%d", &i) != 1 || i > numwads)
 		return -1;
 	return i-1;
+#endif // __VITA__
 }
 
 void I_PutInClipboard (const char *str)

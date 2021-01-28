@@ -56,6 +56,10 @@
 #include "r_memory.h"
 #include "swrenderer/r_renderthread.h"
 
+#ifdef __VITA__
+#include <alloca.h>
+#endif
+
 EXTERN_CVAR(Bool, r_fullbrightignoresectorcolor)
 
 namespace swrenderer

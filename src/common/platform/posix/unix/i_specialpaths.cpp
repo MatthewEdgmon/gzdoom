@@ -230,11 +230,17 @@ FString M_GetDemoPath()
 
 FString M_GetNormalizedPath(const char* path)
 {
+// VITA: Not used anywhere??
+#ifdef __VITA__
+	FString fullpath = path;
+	return fullpath;
+#else
 	char *actualpath;
 	actualpath = realpath(path, NULL);
 	if (!actualpath) // error ?
 		return nullptr;
 	FString fullpath = actualpath;
 	return fullpath;
+#endif
 }
 

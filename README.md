@@ -16,7 +16,7 @@ Your system must be able to build a native version of LZDoom before compiling. Y
 ```
 cd vita
 cd zmusic
-vita-makepkg
+vita-makepkg -i
 ```
 
 LZDoom requires a native build to be done first, and uses the result as an input file (you MUST name the build directory native_build):

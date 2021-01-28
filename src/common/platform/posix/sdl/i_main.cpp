@@ -45,6 +45,10 @@
 #include <sys/utsname.h>
 #endif
 
+#ifdef __VITA__
+#include <psp2/kernel/clib.h>
+#endif
+
 #include "engineerrors.h"
 #include "m_argv.h"
 #include "c_console.h"
@@ -154,14 +158,35 @@ void I_StartupJoysticks();
 
 int main (int argc, char **argv)
 {
-#if !defined (__VITA__)
+
+#ifdef __VITA__
+	sceClibPrintf(GAMENAME" %s - %s - SDL version\nCompiled on %s\n", GetVersionString(), GetGitTime(), __DATE__);
+
+	if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+		fprintf(stderr, "Could not initialize SDL:\n%s\n", SDL_GetError());
+		return -1;
+	}
+
+	sceClibPrintf("\n");
+
+	Args = new FArgs(argc, argv);
+
+	I_StartupJoysticks();
+
+	const int result = GameMain();
+
+	SDL_Quit();
+
+	return result;
+
+#else // __VITA__
+
 #if !defined (__APPLE__)
 	{
 		int s[4] = { SIGSEGV, SIGILL, SIGFPE, SIGBUS };
 		cc_install_handlers(argc, argv, 4, s, GAMENAMELOWERCASE "-crash.log", GetCrashInfo);
 	}
 #endif // !__APPLE__
-#endif // !__VITA__
 
 	printf(GAMENAME" %s - %s - SDL version\nCompiled on %s\n",
 		GetVersionString(), GetGitTime(), __DATE__);
@@ -185,8 +210,6 @@ int main (int argc, char **argv)
 	Args = new FArgs(argc, argv);
 
 	// Should we even be doing anything with progdir on Unix systems?
-	// VITA: Nope.
-#ifndef __VITA__
 	char program[PATH_MAX];
 	if (realpath (argv[0], program) == NULL)
 		strcpy (program, argv[0]);
@@ -200,7 +223,6 @@ int main (int argc, char **argv)
 	{
 		progdir = "./";
 	}
-#endif // __VITA__
 
 	I_StartupJoysticks();
 
@@ -209,4 +231,5 @@ int main (int argc, char **argv)
 	SDL_Quit();
 
 	return result;
+#endif // __VITA__
 }
