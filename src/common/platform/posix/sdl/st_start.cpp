@@ -306,7 +306,9 @@ bool FTTYStartupScreen::NetLoop(bool (*timer_callback)(void *), void *userdata)
 		FD_ZERO (&rfds);
 		FD_SET (STDIN_FILENO, &rfds);
 
-		retval = select (1, &rfds, NULL, NULL, &tv);
+		// VITA: TODO: HACK: Figure out a replacement for this.
+		//retval = select (1, &rfds, NULL, NULL, &tv);
+		retval = 0;
 
 		if (retval == -1)
 		{

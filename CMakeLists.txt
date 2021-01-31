@@ -34,6 +34,8 @@ if(VITA)
 	add_definitions(-D__VITA__ -DBSD -D_GNU_SOURCE) # This is hacked together to just get it to build.
 	# for some reason the check for clock_gettime passes (?) regardless if force skipped or not.
 	add_definitions(-DNO_CLOCK_GETTIME)
+	# We'll be using our own frontend
+	add_definitions(-DNO_GTK)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -O0 -g3 -fsigned-char -fno-short-enums -flto")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -O0 -g3 -fsigned-char -fno-short-enums -flto")
 	set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -g3")
@@ -264,7 +266,7 @@ if( MSVC )
 	# String pooling
 	# Function-level linking
 	# Disable run-time type information
-	if ( HAVE_VULKAN )
+	if ( HAVE_VULKAN AND NOT VITA )
 		set( ALL_C_FLAGS "/GF /Gy /DHAVE_VULKAN" )
 	else()
 		set( ALL_C_FLAGS "/GF /Gy" )
@@ -306,7 +308,7 @@ if( MSVC )
 	string(REPLACE "/MDd " " " CMAKE_C_FLAGS_DEBUG ${CMAKE_C_FLAGS_DEBUG} )
 else()
 	set( REL_LINKER_FLAGS "" )
-	if ( HAVE_VULKAN )
+	if ( HAVE_VULKAN AND NOT VITA )
 		set( ALL_C_FLAGS "-ffp-contract=off -DHAVE_VULKAN" )
 	else()
 		set( ALL_C_FLAGS "-ffp-contract=off" )
@@ -369,7 +371,7 @@ option(FORCE_INTERNAL_BZIP2 "Use internal bzip2")
 option(FORCE_INTERNAL_ASMJIT "Use internal asmjit" ON)
 mark_as_advanced( FORCE_INTERNAL_ASMJIT )
 
-if (HAVE_VULKAN)
+if (HAVE_VULKAN AND NOT VITA)
 	add_subdirectory( libraries/glslang/glslang)
 	add_subdirectory( libraries/glslang/spirv )
 	add_subdirectory( libraries/glslang/OGLCompilersDLL )

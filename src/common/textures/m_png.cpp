@@ -42,6 +42,10 @@
 #include <malloc.h>		// for alloca()
 #endif
 
+#ifdef __VITA__
+#include <alloca.h>
+#endif
+
 #include "basics.h"
 #include "m_crc32.h"
 #include "m_swap.h"

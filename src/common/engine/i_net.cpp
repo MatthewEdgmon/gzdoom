@@ -61,8 +61,10 @@
 #	include <errno.h>
 #	include <unistd.h>
 #	include <netdb.h>
+#ifndef __VITA__
 #	include <sys/ioctl.h>
-#	ifdef __sun
+#endif
+#	if defined(__sun) || defined(__VITA__)
 #		include <fcntl.h>
 #	endif
 #endif
@@ -89,7 +91,9 @@ typedef int SOCKET;
 #define SOCKET_ERROR		-1
 #define INVALID_SOCKET		-1
 #define closesocket			close
+#ifndef __VITA__
 #define ioctlsocket			ioctl
+#endif
 #define Sleep(x)			usleep (x * 1000)
 #define WSAEWOULDBLOCK		EWOULDBLOCK
 #define WSAECONNRESET		ECONNRESET
@@ -463,10 +467,11 @@ void StartNetwork (bool autoPort)
 	// create communication socket
 	mysocket = UDPsocket ();
 	BindToLocalPort (mysocket, autoPort ? 0 : DOOMPORT);
-#ifndef __sun
-	ioctlsocket (mysocket, FIONBIO, &trueval);
-#else
+	
+#if defined(__sun) || defined(__VITA__)
 	fcntl(mysocket, F_SETFL, trueval | O_NONBLOCK);
+#else
+	ioctlsocket (mysocket, FIONBIO, &trueval);
 #endif
 }
 

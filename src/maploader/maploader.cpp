@@ -83,6 +83,10 @@
 #include "texturemanager.h"
 #include "hw_vertexbuilder.h"
 
+#ifdef __VITA__
+#include <alloca.h>
+#endif
+
 enum
 {
 	MISSING_TEXTURE_WARN_LIMIT = 20

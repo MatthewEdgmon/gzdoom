@@ -33,6 +33,9 @@
 
 #include "i_module.h"
 
+// VITA: It seems like this library loading is only used on Windows anyways...
+#ifndef __VITA__
+
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -106,3 +109,5 @@ void FModule_SetProgDir(const char* progdir)
 {
 	module_progdir = progdir;
 }
+
+#endif // __VITA__

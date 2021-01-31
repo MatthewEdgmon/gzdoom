@@ -421,7 +421,7 @@ add_custom_target( revision_check ALL
 # Libraries ZDoom needs
 
 set( ZDOOM_LIBS ${ZDOOM_LIBS} "${ZLIB_LIBRARIES}" "${JPEG_LIBRARIES}" "${BZIP2_LIBRARIES}" "${CMAKE_DL_LIBS}" )
-if (HAVE_VULKAN)
+if (HAVE_VULKAN AND NOT VITA)
 	set( ZDOOM_LIBS ${ZDOOM_LIBS} "glslang" "SPIRV" "OGLCompiler")
 endif()
 include_directories( "${ZLIB_INCLUDE_DIR}" "${BZIP2_INCLUDE_DIR}" "${LZMA_INCLUDE_DIR}" "${JPEG_INCLUDE_DIR}" "${ZMUSIC_INCLUDE_DIR}" )
@@ -677,7 +677,7 @@ file( GLOB HEADER_FILES
 set( VK_HEADER_FILES "" )
 set( GL_HEADER_FILES "" )
 
-if ( HAVE_VULKAN )
+if ( HAVE_VULKAN AND NOT VITA )
 file( GLOB VK_HEADER_FILES
 	common/rendering/vulkan/*.h
 	common/rendering/vulkan/system/*.h
@@ -834,7 +834,7 @@ set (VULKAN_SOURCES
 	common/rendering/vulkan/thirdparty/vk_mem_alloc/vk_mem_alloc.cpp
 )
 
-if (HAVE_VULKAN)
+if (HAVE_VULKAN AND NOT VITA)
 	set (FASTMATH_SOURCES ${FASTMATH_SOURCES} ${VULKAN_SOURCES})
 endif()
 
@@ -1546,7 +1546,7 @@ if ( HAVE_OPENGL )
 source_group("Common\\Rendering\\OpenGL Loader" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/rendering/gl_load/.+")
 source_group("Common\\Rendering\\OpenGL Backend" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/rendering/gl/.+")
 endif()
-if ( HAVE_VULKAN )
+if ( HAVE_VULKAN AND NOT VITA )
 source_group("Common\\Rendering\\Vulkan Renderer\\System" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/rendering/vulkan/system/.+")
 source_group("Common\\Rendering\\Vulkan Renderer\\Renderer" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/rendering/vulkan/renderer/.+")
 source_group("Common\\Rendering\\Vulkan Renderer\\Shaders" REGULAR_EXPRESSION "^${CMAKE_CURRENT_SOURCE_DIR}/common/rendering/vulkan/shaders/.+")

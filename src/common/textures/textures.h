@@ -45,6 +45,10 @@
 #include "floatrect.h"
 #include "refcounted.h"
 
+#ifdef __VITA__
+#include <alloca.h>
+#endif
+
 typedef TMap<int, bool> SpriteHits;
 class FImageSource;
 class FGameTexture;

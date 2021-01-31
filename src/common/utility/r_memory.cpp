@@ -25,6 +25,10 @@
 #include "r_memory.h"
 #include <stdlib.h>
 
+#ifdef __VITA__
+#include <alloca.h>
+#endif
+
 void *RenderMemory::AllocBytes(int size)
 {
 	size = (size + 15) / 16 * 16; // 16-byte align
@@ -66,6 +70,10 @@ static void* Aligned_Alloc(size_t alignment, size_t size)
 	void* ptr;
 #if defined (_MSC_VER) || defined (__MINGW32__)
 	ptr = _aligned_malloc(size, alignment);
+	if (!ptr)
+		throw std::bad_alloc();
+#elif defined(__VITA__)
+	ptr = memalign(alignment, size);
 	if (!ptr)
 		throw std::bad_alloc();
 #else

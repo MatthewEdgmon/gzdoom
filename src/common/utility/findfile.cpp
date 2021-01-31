@@ -40,6 +40,7 @@
 
 #ifndef _WIN32
 
+#include <dirent.h>
 #include <unistd.h>
 #include <fnmatch.h>
 #include <sys/stat.h>
@@ -72,7 +73,9 @@ void *I_FindFirst(const char *const filespec, findstate_t *const fileinfo)
 	}
 
 	fileinfo->current = 0;
-	fileinfo->count = scandir(dir.GetChars(), &fileinfo->namelist, matchfile, alphasort);
+	//fileinfo->count = scandir(dir.GetChars(), &fileinfo->namelist, matchfile, alphasort);
+	// VITA: Hack to get it to build.
+	fileinfo->count = 0;
 
 	if (fileinfo->count > 0)
 	{
