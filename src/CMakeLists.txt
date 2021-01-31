@@ -420,7 +420,12 @@ add_custom_target( revision_check ALL
 
 # Libraries ZDoom needs
 
-set( ZDOOM_LIBS ${ZDOOM_LIBS} "${ZLIB_LIBRARIES}" "${JPEG_LIBRARIES}" "${BZIP2_LIBRARIES}" "${CMAKE_DL_LIBS}" )
+if(VITA)
+	set( ZDOOM_LIBS ${ZDOOM_LIBS} "${ZLIB_LIBRARIES}" "${JPEG_LIBRARIES}" "${BZIP2_LIBRARIES}" )
+else()
+	set( ZDOOM_LIBS ${ZDOOM_LIBS} "${ZLIB_LIBRARIES}" "${JPEG_LIBRARIES}" "${BZIP2_LIBRARIES}" "${CMAKE_DL_LIBS}" )
+endif()
+
 if (HAVE_VULKAN AND NOT VITA)
 	set( ZDOOM_LIBS ${ZDOOM_LIBS} "glslang" "SPIRV" "OGLCompiler")
 endif()
@@ -1308,10 +1313,10 @@ if(VITA)
 	# LZDoom libraries.
 	target_link_libraries(zdoom ${ZDOOM_LIBS} gdtoa lzma ${ZMUSIC_LIBRARIES} )
 	# Vita libraries.
-	target_link_libraries(zdoom SceLibKernel_stub SceAppMgr_stub SceSysmodule_stub SceCtrl_stub SceTouch_stub SceNet_stub SceNetCtl_stub SceAppUtil_stub ScePower_stub SceCommonDialog_stub)
-	target_link_libraries(zdoom SceAudio_stub SceGxm_stub SceDisplay_stub SceHid_stub)
+	#target_link_libraries(zdoom SceLibKernel_stub SceAppMgr_stub SceSysmodule_stub SceCtrl_stub SceTouch_stub SceNet_stub SceNetCtl_stub SceAppUtil_stub ScePower_stub SceCommonDialog_stub)
+	#target_link_libraries(zdoom SceAudio_stub SceGxm_stub SceDisplay_stub SceHid_stub)
 else()
-target_link_libraries( zdoom ${ZDOOM_LIBS} gdtoa lzma ${ZMUSIC_LIBRARIES} )
+	target_link_libraries( zdoom ${ZDOOM_LIBS} gdtoa lzma ${ZMUSIC_LIBRARIES} )
 endif()
 
 include_directories( .

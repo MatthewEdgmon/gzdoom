@@ -20,7 +20,7 @@ if(VITA)
 
 	# Tell cmake where our ZMusic built from vita-makepkg is.
 	set(ZMUSIC_INCLUDE_DIR "/usr/local/vitasdk/arm-vita-eabi/include/")
-	set(ZMUSIC_LIBRARIES "/usr/local/vitasdk/arm-vita-eabi/lib/")
+	set(ZMUSIC_LIBRARIES "/usr/local/vitasdk/arm-vita-eabi/lib/libzmusic.so")
 
 	# Set CMake target architecture.
 	set(ARCH arm)
@@ -36,8 +36,11 @@ if(VITA)
 	add_definitions(-DNO_CLOCK_GETTIME)
 	# We'll be using our own frontend
 	add_definitions(-DNO_GTK)
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -O0 -g3 -fsigned-char -fno-short-enums -flto")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -O0 -g3 -fsigned-char -fno-short-enums -flto")
+	add_definitions(-DNO_SEND_STATS)
+	#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -O0 -g3 -fsigned-char -fno-short-enums -flto")
+	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -O0 -g3 -fsigned-char -fno-short-enums -flto")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -ffunction-sections -O3 -g3 -fsigned-char -fno-lto")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=cortex-a9 -mfpu=neon -mthumb -ffunction-sections -O3 -g3 -fsigned-char -fno-lto")
 	set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -g3")
 	set(HAVE_SDL_JOYSTICKGETAXIS TRUE)
 endif()
@@ -342,7 +345,7 @@ else()
 			# If we're compiling with a custom GCC on the Mac (which we know since g++-4.2 doesn't support C++11) statically link libgcc.
 			set( ALL_C_FLAGS "-static-libgcc" )
 		endif()
-	elseif( NOT MINGW )
+	elseif( NOT MINGW AND NOT VITA )
 		# Generic GCC/Clang requires position independent executable to be enabled explicitly
 		set( ALL_C_FLAGS "${ALL_C_FLAGS} -fPIE" )
 		set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie" )

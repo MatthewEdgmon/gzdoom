@@ -5,15 +5,24 @@ url="https://github.com/coelckers/ZMusic.git"
 source=("https://github.com/coelckers/ZMusic/archive/${pkgver}.tar.gz")
 sha256sums=('5f432b022e023175eae7701625f79287e9ffe889a444179681381026b4fb93bf')
 
+prepare() {
+  cd ${pkgname}-${pkgver}
+  patch -Np1 -i "${srcdir}/../remove_dlfcn.patch"
+}
+
 build() {
-  cd ZMusic-${pkgver}
-  mkdir build && cd build
-  cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CROSSCOMPILING=FALSE -DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake -DCMAKE_INSTALL_PREFIX=$prefix
+  cd ${pkgname}-${pkgver}
+  mkdir native_build && cd native_build
+  cmake ..
+  make -j$(nproc)
+  cd ..
+  mkdir vita_build && cd vita_build
+  cmake .. -DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$prefix -DVITA=1 -DBUILD_STATIC_LIBS=ON -DDYN_FLUIDSYNTH=OFF -DDYN_SNDFILE=OFF -DDYN_MPG123=OFF -DIMPORT_EXECUTABLES=../native_build/ImportExecutables.cmake
   make -j$(nproc)
 }
 
 package () {
-  cd ZMusic-${pkgver}
-  cd build
+  cd ${pkgname}-${pkgver}
+  cd vita_build
   make DESTDIR=$pkgdir install
 }
