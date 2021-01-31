@@ -164,10 +164,6 @@ void FMapInfoParser::ParseSkill ()
 		{
 			skill.DoubleSpawn = true;
 		}
-		else if (sc.Compare ("nodoom2monsters"))
-		{
-			skill.SetClassicModeReplacements();
-		}
 		else if (sc.Compare("respawntime"))
 		{
 			ParseAssign();
@@ -614,30 +610,6 @@ int FSkillInfo::GetTextColor() const
 void FSkillInfo::SetReplacement(FName a, FName b)
 {
 	Replace[a] = b;
-}
-
-//==========================================================================
-//
-// FSkillInfo::SetClassicModeReplacements
-//
-//==========================================================================
-
-void FSkillInfo::SetClassicModeReplacements()
-{
-	Replace[FName("Arachnotron")] = FName("ArachnotronReplacer_LZ");
-	Replaced[FName("ArachnotronReplacer_LZ")] = FName("Arachnotron");
-	Replace[FName("Archvile")] = FName("BaronOfHell");
-	Replaced[FName("BaronOfHell")] = FName("Archvile");
-	Replace[FName("HellKnight")] = FName("BaronOfHell");
-	Replaced[FName("BaronOfHell")] = FName("HellKnight");
-	Replace[FName("Fatso")] = FName("FatsoReplacer_LZ");
-	Replaced[FName("FatsoReplacer_LZ")] = FName("Fatso");
-	Replace[FName("PainElemental")] = FName("Cacodemon");
-	Replaced[FName("Cacodemon")] = FName("PainElemental");
-	Replace[FName("ChaingunGuy")] = FName("ZombieMan");
-	Replaced[FName("ZombieMan")] = FName("ChaingunGuy");
-	Replace[FName("Revenant")] = FName("DoomImp");
-	Replaced[FName("DoomImp")] = FName("Revenant");
 }
 
 //==========================================================================

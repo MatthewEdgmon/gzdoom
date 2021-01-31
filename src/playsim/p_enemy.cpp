@@ -71,8 +71,6 @@ static FRandom pr_defect ("Defect");
 static FRandom pr_skiptarget("SkipTarget");
 static FRandom pr_enemystrafe("EnemyStrafe");
 
-EXTERN_CVAR (Bool, sv_nodoom2monsters)
-
 // movement interpolation is fine for objects that are moved by their own
 // velocity. But for monsters it is problematic.
 // 1. They don't move every tic
@@ -3131,7 +3129,8 @@ void A_BossDeath(AActor *self)
 		return;
 
 	if ((Level->i_compatflags & COMPATF_ANYBOSSDEATH) || ( // [GZ] Added for UAC_DEAD
-		((Level->flags & LEVEL_MAP07SPECIAL) && (type == NAME_Fatso || type == NAME_Arachnotron)) ||
+		((Level->flags & LEVEL_MAP07SPECIAL) && (type == NAME_Fatso || type == NAME_Arachnotron ||
+			type == FName("FatsoReplacer_LZ") || type == FName("ArachnotronReplacer_LZ"))) ||
 		((Level->flags & LEVEL_BRUISERSPECIAL) && (type == NAME_BaronOfHell)) ||
 		((Level->flags & LEVEL_CYBORGSPECIAL) && (type == NAME_Cyberdemon)) ||
 		((Level->flags & LEVEL_SPIDERSPECIAL) && (type == NAME_SpiderMastermind)) ||
@@ -3159,12 +3158,12 @@ void A_BossDeath(AActor *self)
 		PClassActor * arachnotron = PClass::FindActor(NAME_Arachnotron);
 		bool samereplacement = (type == NAME_Fatso || type == NAME_Arachnotron) && fatso && arachnotron && fatso->GetReplacement(Level) == arachnotron->GetReplacement(Level);
 
-		if (type == NAME_Fatso || samereplacement)
+		if (type == NAME_Fatso || type == FName("FatsoReplacer_LZ") || samereplacement)
 		{
 			Level->EV_DoFloor (DFloor::floorLowerToLowest, NULL, 666, 1., 0, -1, 0, false);
 		}
 
-		if (type == NAME_Arachnotron || samereplacement)
+		if (type == NAME_Arachnotron || type == FName("ArachnotronReplacer_LZ") || samereplacement)
 		{
 			Level->EV_DoFloor (DFloor::floorRaiseByTexture, NULL, 667, 1., 0, -1, 0, false);
 		}

@@ -52,8 +52,6 @@
 #include "events.h"
 #include "i_system.h"
 
-CVAR(Bool, sv_nodoom2monsters, false, CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_DOWNSTREAM)
-
 static TArray<cluster_info_t> wadclusterinfos;
 TArray<level_info_t> wadlevelinfos;
 
@@ -2476,15 +2474,6 @@ void G_ParseMapInfo (FString basemapinfo)
 	if (AllSkills.Size() == 0)
 	{
 		I_FatalError ("You cannot use clearskills in a MAPINFO if you do not define any new skills after it.");
-	}
-
-	if (Args->CheckParm("-nod2monsters"))
-		sv_nodoom2monsters = true;
-
-	if (sv_nodoom2monsters && !netcompat && gameinfo.gametype == GAME_Doom) // Play with only original Doom monsters
-	{
-		for (unsigned int i = 0; i < AllSkills.Size(); i++)
-			AllSkills[i].SetClassicModeReplacements();
 	}
 }
 

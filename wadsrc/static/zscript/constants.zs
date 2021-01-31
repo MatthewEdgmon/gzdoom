@@ -965,7 +965,6 @@ enum ESkillProperty
 	SKILLP_SpawnMulti,
 	SKILLP_InstantReaction,
 	SKILLP_DoubleSpawn,
-	SKILLP_NoDoom2Monsters,
 };
 enum EFSkillProperty	// floating point properties
 {

@@ -1863,19 +1863,6 @@ CCMD (kill)
 			Net_WriteByte (DEM_GENERICCHEAT);
 			Net_WriteByte (CHT_MASSACRE2);
 		}
-		else if (!stricmp (argv[1], "fuckers"))
-		{
-			Net_WriteByte (DEM_KILLCLASSCHEAT);
-			Net_WriteString ("arachnotron");
-			Net_WriteByte (DEM_KILLCLASSCHEAT);
-			Net_WriteString ("archvile");
-			Net_WriteByte (DEM_KILLCLASSCHEAT);
-			Net_WriteString ("fatso");
-			Net_WriteByte (DEM_KILLCLASSCHEAT);
-			Net_WriteString ("painelemental");
-			Net_WriteByte (DEM_KILLCLASSCHEAT);
-			Net_WriteString ("revenant");
-		}
 		else
 		{
 			Net_WriteByte (DEM_KILLCLASSCHEAT);

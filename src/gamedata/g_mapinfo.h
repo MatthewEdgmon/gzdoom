@@ -478,7 +478,6 @@ enum ESkillProperty
 	SKILLP_SpawnMulti,
 	SKILLP_InstantReaction,
 	SKILLP_DoubleSpawn,
-	SKILLP_NoDoom2Monsters,
 };
 enum EFSkillProperty	// floating point properties
 {
@@ -550,7 +549,6 @@ struct FSkillInfo
 	int GetTextColor() const;
 
 	void SetReplacement(FName a, FName b);
-	void SetClassicModeReplacements();
 	FName GetReplacement(FName a);
 	void SetReplacedBy(FName b, FName a);
 	FName GetReplacedBy(FName b);
