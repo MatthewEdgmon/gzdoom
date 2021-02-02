@@ -20,7 +20,7 @@ if(VITA)
 
 	# Tell cmake where our ZMusic built from vita-makepkg is.
 	set(ZMUSIC_INCLUDE_DIR "/usr/local/vitasdk/arm-vita-eabi/include/")
-	set(ZMUSIC_LIBRARIES "/usr/local/vitasdk/arm-vita-eabi/lib/libzmusic.so")
+	set(ZMUSIC_LIBRARIES "/usr/local/vitasdk/arm-vita-eabi/lib/libzmusic.a")
 
 	# Set CMake target architecture.
 	set(ARCH arm)
